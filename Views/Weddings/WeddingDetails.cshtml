@@ -1,0 +1,31 @@
+@model WeddingDetailsViewModel
+
+@{
+    var userId = Model.UserId;
+    var wedding = Model.Wedding;
+    ViewData["Title"] = "Wedding Details";
+}
+
+<section>
+    <h1 class="display-4 mb-3">Wedding Details</h1>
+    <a href="/weddings/new" class="mb-3">Add a New Wedding</a>
+    <h2 class="display-6 mb-3">@wedding.Title: @wedding.Date.ToString("MMMM dd, yyyy")</h2>
+    <div class="row">
+        <div class="col">
+            <h3>Attendees</h3>
+            <ul>
+                @foreach (var attendee in wedding.RSVPs)
+                {
+                    <li>@attendee.User.FirstName @attendee.User.LastName</li>
+                }
+            </ul>
+            @if (wedding.UserId == userId)
+            {
+                <a href="/weddings/@wedding.WeddingId/edit">Edit</a>
+                <form asp-action="DeleteWedding" asp-controller="Wedding" asp-route-weddingId="@wedding.WeddingId" method="post">
+                    <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                </form>
+            }
+        </div>
+    </div>
+</section>
